@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import psu.edu.paradiseClone.dao.EmployeeRepository;
 import psu.edu.paradiseClone.dao.TagRepository;
 import psu.edu.paradiseClone.entity.Tag;
 
