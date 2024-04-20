@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${product.name}">Product Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</head>
+
+<header th:insert="~{header :: komo}"></header>
+<header class="sticky-top" th:replace="~{header :: stick}"></header>
+<body>
+    
+    <div class="container">
+        <!-- <h1 th:text="${product.name}"></h1> -->
+        <div class="row gx-4 justify-content-evenly">
+            <div class="col-5 " >
+                <div class="row  border p-4 my-5" style="height: 35rem;">
+
+
+                    <div id="carouselExampleIndicators" class="carousel slide">
+                        <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        </div>
+                        <div class="carousel-inner">
+                        <!-- <div class="carousel-item active">
+                            <img th:src="${product.images[0].location}"	src="/images/banners/game-banner-1.webp" class="d-block w-100" alt="...">
+                        </div> -->
+                        <div th:each="image, iStat : ${product.images}">
+                            <div class="carousel-item" th:classappend="${iStat.first}? 'active' : ''">
+                                <img th:src="${image.location}" class="d-block w-100" alt="...">
+                            </div>
+                        </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row  border p-4 my-5">
+                    <h3 class="text-primary">Description</h1>
+                    <p th:text="${product.description}"></p>
+
+
+                </div>
+            </div>
+            <div class="col-5 border p-4 my-5">
+                <h2 th:text="${product.name}"></h2>
+                <p><span th:text="${product.manufacturer.manufacturerName}"></span> <span>|   SKU:</span> <span th:text="${product.sku}"></span></p>
+                <hr>
+                <p class="my-5"><span class="fs-3">Price:   $</span><span class="fs-3" th:text="${product.price}"></span></p>
+                <form class="" role="search">
+                    <div class="d-flex">
+                        <label class="fs-3 me-3">Quantity:    </label>
+                        <select class="form-select me-2 w-25" type="select" id="quantity" aria-label="Quantity">
+                            <option selected value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                    
+                    <div class="m-6">
+                    <button type="button" id="submit" class="btn btn-primary col-5 mt-5"  >Add to Cart</button>
+                    </div>
+                  </form>
+            </div>
+
+        </div>
+        <div >
+            <h3 class="my-5">You may also like</h3>
+            <div class="row">
+                <div class="col-2" th:each="product1 : ${product.tags[0].products}">
+                    <div class="card" style="width: 18rem;" th:with="images = ${product1.images}">
+                        <img th:src="${images[0].location}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                          <a th:href="|/store/products/${product1.sku}|" class="card-title placeholder" th:class="card-title" th:text="${product1.name}"></a>
+                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                          <a th:href="|/store/products/${product1.sku}|" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+<footer th:insert="~{footer :: footer}"></footer>
+</html>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"
+integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script th:inline="javascript">
+
+    // function addCart(quantity){
+    //     var key = [[${product.id}]];
+    //     sessionStorage.setItem(key, quantity)
+    //     onclick="addCart(document.getElementById('quantity').value)"
+    // }
+
+    $(document).ready(function () {
+
+        //alertPlaceholder.data("productStorage", localStorage.getItem("productStorage"))
+        //console.log(alertPlaceholder.data("productStorage"))
+        let cartArr = []
+
+
+        try { cartArr = $.parseJSON(sessionStorage.getItem("cart")) }
+        catch {
+            console.log("empty cart")
+            cartArr = []
+        }
+        if (!cartArr) {
+            cartArr = []
+        }
+
+        $(`#submit`).on("click", (event) => {
+            let index = matchID([[${product.id}]]);
+            if (index < 0) {
+                let cartItem = {
+                    productId: [[${product.id}]],
+                    quantity: $('#quantity option:checked').val()
+                }
+                cartArr.push(cartItem)
+            }
+            else{
+                cartArr[index].quantity = $('#quantity option:checked').val();
+                
+            }
+                
+            
+            sessionStorage.setItem("cart", JSON.stringify(cartArr))
+            });
+
+
+        function matchID(id) {
+        //console.log(alertPlaceholder.data("productStorage"))
+
+
+            if (!cartArr) {
+                //json collection is empty, so no match
+
+                return -1
+            }
+            else {
+                console.log(cartArr)
+                let match = false;
+                let index = 0;
+                for (let i = 0; i < cartArr.length; i++) {
+                    console.log("loop " + cartArr[i].productId)
+                    if (cartArr[i].productId == id) {
+                        console.log("match: arr: " + cartArr[i].productId + " new: " + id)
+                        match = true
+                        index = i;
+                    }
+                }
+                console.log("match : " + match)
+                if (match) {
+                    return index
+                }
+                return -1
+
+
+                }
+
+        }
+
+    })
+   
+
+
+
+</script>
