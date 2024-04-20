@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.validation.Valid;
 import psu.edu.paradiseClone.entity.Address;
 import psu.edu.paradiseClone.entity.Customer;
-import psu.edu.paradiseClone.entity.Employee;
 import psu.edu.paradiseClone.entity.Order;
 import psu.edu.paradiseClone.entity.Product;
 import psu.edu.paradiseClone.service.AddressService;
