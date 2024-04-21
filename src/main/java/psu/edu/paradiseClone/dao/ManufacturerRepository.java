@@ -7,4 +7,5 @@ import psu.edu.paradiseClone.entity.Manufacturer;
 public interface ManufacturerRepository extends JpaRepository<Manufacturer, Integer>{
 	
 
+	public Manufacturer findByManufacturerId(int id);
 }

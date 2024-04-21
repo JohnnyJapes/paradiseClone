@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -21,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 
 import jakarta.validation.Valid;
+import psu.edu.paradiseClone.dao.ManufacturerRepository;
 import psu.edu.paradiseClone.dao.OrderItemRepository;
 import psu.edu.paradiseClone.entity.Address;
 import psu.edu.paradiseClone.entity.Customer;
+import psu.edu.paradiseClone.entity.Manufacturer;
 import psu.edu.paradiseClone.entity.Order;
 import psu.edu.paradiseClone.entity.OrderItem;
 import psu.edu.paradiseClone.entity.Product;
@@ -49,12 +52,13 @@ public class StoreController {
     private OrderService orderService;
     private ShipmentService shipService;
     private OrderItemRepository oiRepo;
+    private ManufacturerRepository manRepo;
 
     
 	
 	
 	public StoreController(TagService tagService, CustomerService custService, ProductService productService, AddressService addressService, OrderService orderService,
-			ShipmentService shipService, OrderItemRepository oiRepo) {
+			ShipmentService shipService, OrderItemRepository oiRepo, ManufacturerRepository manRepo) {
 		super();
 		this.tagService = tagService;
 		this.custService = custService;
@@ -63,6 +67,7 @@ public class StoreController {
 		this.orderService = orderService;
 		this.shipService = shipService;
 		this.oiRepo = oiRepo;
+		this.manRepo = manRepo;
 	}
 
 	//@RequestMapping(method = RequestMethod.POST, value = "/create-order")
@@ -261,6 +266,21 @@ public class StoreController {
 		};
 		
 		if(manuId != null) {
+			
+			Optional<Manufacturer> result = manRepo.findById(manuId);
+			
+			if (result.isPresent()) {
+				int i = 0;
+				for (i=0; i<products.size();i+=0) {
+					//boolean remove = true;
+					if (products.get(i).getManufacturer().getManufacturerId() != result.get().getManufacturerId())
+						products.remove(i);
+					else i++;
+				}
+				theModel.addAttribute("manufacturer", result.get());
+			}
+			
+
 			
 		}
 		
