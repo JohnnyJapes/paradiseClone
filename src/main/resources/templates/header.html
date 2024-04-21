@@ -14,10 +14,10 @@
 	<div th:fragment="stick" class="container-fluid text-center p-0 sticky-top">
 		<div class="row justify-content-center gx-2 align-items-center bg-primary ">
 			<img class="col-2" src="/images/logo.avif">
-			<form class="col-4">
+			<form class="col-4" action="/store/catalog">
 				<div class="input-group py-1">
-				  <input type="text" class="form-control" placeholder="Search..." aria-label="search" aria-describedby="button-addon2">
-				  <button class="btn btn-info" type="button" id="button-addon2"> <svg width="20" height="20" class="DocSearch-Search-Icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M14.386 14.386l4.0877 4.0877-4.0877-4.0877c-2.9418 2.9419-7.7115 2.9419-10.6533 0-2.9419-2.9418-2.9419-7.7115 0-10.6533 2.9418-2.9419 7.7115-2.9419 10.6533 0 2.9419 2.9418 2.9419 7.7115 0 10.6533z" stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+				  <input type="text" class="form-control" placeholder="Search..." aria-label="search" name="searchText" aria-describedby="button-addon2">
+				  <button class="btn btn-info" type="submit" id="button-addon2"> <svg width="20" height="20" class="DocSearch-Search-Icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M14.386 14.386l4.0877 4.0877-4.0877-4.0877c-2.9418 2.9419-7.7115 2.9419-10.6533 0-2.9419-2.9418-2.9419-7.7115 0-10.6533 2.9418-2.9419 7.7115-2.9419 10.6533 0 2.9419 2.9418 2.9419 7.7115 0 10.6533z" stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
 				</div>
 			</form>
 			<currency class="col-1 mx-2">
@@ -163,7 +163,22 @@
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
+			<div th:if="${success}" class="col">
+				<div class="alert alert-success  alert-dismissible" th:text="${success}">
+					success
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			</div>
+			<div th:if="${#strings.equals(param.success, 'order')}" class="col">
+				<div class="alert alert-success  alert-dismissible" >
+					Order Placed
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			</div>
 
+			<div id="alertPlaceholder">
+
+			</div>
 	
 		</div>
 	

@@ -136,8 +136,8 @@ public class StoreController {
 		shipService.save(tempShip);
 		
 
-		
-		return "redirect:/store/cart";
+		model.addAttribute("success", "Order Placed");
+		return "redirect:/store/cart?success=order";
 	}
 	@GetMapping("/products/{sku}")
 	public String getProductPage(@PathVariable String sku, Model theModel, Authentication authentication) {
@@ -202,7 +202,8 @@ public class StoreController {
 	}
 	
 	@GetMapping("/catalog")
-	public String getCatalog(@RequestParam(name = "manuId",required = false) Integer manuId, @RequestParam(required = false) List<String> filters, Model theModel, Authentication authentication) {
+	public String getCatalog(@RequestParam(name = "manuId",required = false) Integer manuId, @RequestParam(required = false) List<String> filters,
+		 Model theModel, Authentication authentication, @RequestParam(name = "searchText",required = false) String searchString) {
 
 		System.out.println(filters);
 		if(authentication != null) {
@@ -215,6 +216,7 @@ public class StoreController {
 			};
 
 		};
+		List<Product> products = new ArrayList<Product>();
     	List<Tag> tags = tagService.findAll();
     	for (Tag tag : tags) {
     		tag.generateLink();
@@ -223,10 +225,15 @@ public class StoreController {
 		if(filters == null) {
 
 	    	System.out.println(tags.get(0).getLink());
-	    	List<Product> products = productService.findAll();
 	    	
 
-	    	theModel.addAttribute("products",products);
+			if(searchString != null && !searchString.isEmpty()) {
+			 products = productService.findByNameLike(searchString);	
+			}
+			else products = productService.findAll();
+
+
+
 	    	filters = new ArrayList<String>();
 	    	theModel.addAttribute(filters);
 		}
@@ -235,7 +242,7 @@ public class StoreController {
 			for (String i :filters) {
 				tagFilters.add(tagService.findByID(Integer.parseInt(i)));
 			}
-			List<Product> products = productService.findAll();
+			products = productService.findAll();
 			
 			int i = 0;
 			for (int t = 0; t <tagFilters.size(); t++) {
@@ -249,7 +256,7 @@ public class StoreController {
 				}
 				
 			}
-	    	theModel.addAttribute("products",products);
+
 	    	theModel.addAttribute("filters",filters);
 		};
 		
@@ -257,6 +264,8 @@ public class StoreController {
 			
 		}
 		
+
+    	theModel.addAttribute("products",products);
 		
 		return "store/catalog";
 	}

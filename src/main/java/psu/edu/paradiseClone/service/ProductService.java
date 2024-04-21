@@ -11,4 +11,6 @@ public interface ProductService {
 	public Product findById(int id);
 
 	public List<Product> findAll();
+	
+	public List<Product> findByNameLike(String name);
 }

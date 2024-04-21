@@ -39,5 +39,10 @@ public class ProductServiceImpl implements ProductService {
 		return proRepo.findAll();
 		
 	}
+	@Override
+	public List<Product> findByNameLike(String name) {
+	//	return proRepo.findByNameLike(name);
+		return proRepo.findByNameContaining(name);
+	}
 
 }
