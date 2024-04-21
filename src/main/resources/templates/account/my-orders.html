@@ -40,7 +40,7 @@
                     
                 </div>
                 <div class="row align-items-start border ">
-                    <div>
+
                         <div class="col-4 m-0 pb-2 border-end border-bottom" th:each="order : ${orders}">
                             <p th:text="${'Order Date: ' +order.orderDate}"></p>
                             <p th:text="${order.shipment.delivered} ? 'Delivered: Yes' : 'Delivered: Not Yet'"></p>
@@ -51,7 +51,7 @@
                             </ul>
                             <!-- <p th:text="${'Order Date: ' +order.orderDate}"></p> -->
                         </div>
-                    </div>
+
                     <div class="col" th:if="${#lists.isEmpty(orders)}"> <h4 class="text-center p-3">No Orders</h4></div>
 
                 </div>

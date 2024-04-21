@@ -75,7 +75,7 @@ public class SecurityConfig {
                     //.failureHandler(CustomAuthenticationFailureHandler)
 					.permitAll())
 			.logout(logout ->logout.permitAll()
-					.logoutSuccessUrl("/home"))
+					.logoutSuccessUrl("/home?logout"))
 			.exceptionHandling(configurer ->
 			configurer.accessDeniedPage("/access-denied"));
 	

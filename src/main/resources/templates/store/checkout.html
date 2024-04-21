@@ -95,7 +95,7 @@
                 <hr>
                 <div id="list"></div>
                 
-                    <button type="submit" value="Submit" class="btn btn-primary">Complete Order</button>
+                    <button id="checkoutButton" type="submit" value="Submit" class="btn btn-primary">Complete Order</button>
                 
 
             </div>
@@ -113,6 +113,11 @@
 integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 <script th:incline="javascript">
 $(document).ready(function () {
+
+
+    $("#checkoutButton").on("click", function(){
+        sessionStorage.clear();
+    })
 
     let total = 0;
     getProducts();

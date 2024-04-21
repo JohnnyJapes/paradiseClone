@@ -98,11 +98,7 @@
 integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 <script th:inline="javascript">
 
-    // function addCart(quantity){
-    //     var key = [[${product.id}]];
-    //     sessionStorage.setItem(key, quantity)
-    //     onclick="addCart(document.getElementById('quantity').value)"
-    // }
+
 
     $(document).ready(function () {
 
@@ -136,6 +132,14 @@ integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="ano
                 
             
             sessionStorage.setItem("cart", JSON.stringify(cartArr))
+            $("#alertPlaceholder").append(`
+            <div class="col">
+				<div class="alert alert-success  alert-dismissible" >
+					Added [[${product.name}]] to Cart
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			</div>
+`)
             });
 
 
