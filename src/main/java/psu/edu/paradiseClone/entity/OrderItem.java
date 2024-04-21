@@ -5,12 +5,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 //Join table had additional information so it needed to be created for this to work in JPA
 @Entity
+@IdClass(OrderItemId.class)
 @Table(name="order_items")
 public class OrderItem {
 
@@ -19,7 +21,7 @@ public class OrderItem {
 	@Column(name="order_id")
 	private int order_id;
 	
-
+	@Id
 	@OneToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
