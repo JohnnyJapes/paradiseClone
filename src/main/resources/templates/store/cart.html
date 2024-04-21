@@ -56,16 +56,22 @@ integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="ano
 $(document).ready(function () {
 
     let total = 0;
+
     getProducts();
+
 
    // $("#total").text(`${total}`)
     function getProducts() {
-        let cart = JSON.parse( sessionStorage.getItem("cart"))
+       // let cart = JSON.parse( sessionStorage.getItem("cart"))
+       let cart = JSON.parse( sessionStorage.getItem("cart"));
         console.log(cart)
+        let i = 0;
+        let count = cart.length;
         for(let item in cart){
             console.log(`localhost:8080/api/products/${cart[item].productId}`)
             $.getJSON(`http://localhost:8080/api/products/${cart[item].productId}`, function (data, status) {
                 //alert("Data: " + JSON.stringify(data) + "\nStatus: " + status);
+                //this is the success handler
                 console.log("start product fetch ajax")
                 console.log(data)
 
@@ -84,9 +90,19 @@ $(document).ready(function () {
                             </row>
                         </th>
                         <td>${cart[item].quantity}</td>
-                        <td style="width: 4rem">$ ${ (cart[item].quantity * data.price).toFixed(2)}</td>
+                        <td style="width: 4rem">$ ${ (cart[item].quantity * data.price).toFixed(2)} <button class="btn btn-danger ms-1 item" id="item-${i}">Delete</button></td>
                 </tr>
                 `)
+                // $(`#item-${i}`).on("click", function(){
+                //     cart = JSON.parse( sessionStorage.getItem("cart"))
+                //     console.log(`cart.splice(${i}, 1);`)
+                //     cart.splice(i, 1);
+                //     sessionStorage.removeItem("cart");
+                //     console.log("CART: " + cart)
+                //     sessionStorage.setItem("cart", JSON.stringify(cart));
+                //     //sessionStorage.clear();
+                //    // location.reload();
+                // })
                 // <option value=${data[i].productID}>${data[i].productName}</option>
                 console.log(total)
                 $("#total").text(`$ ${total.toFixed(2)}`)
@@ -97,11 +113,39 @@ $(document).ready(function () {
                 console.log("AJAX PRODUCT FAIL")
 
                 //console.log(products[0])
+            }).always(function (){
+                i++;
+                count--;
+                deleteAdd(count);
+
+
             });
 
-            }
-
         }
+    }
+    
+
+    function deleteAdd(counter){
+        if (counter == 0){
+            let cart = JSON.parse( sessionStorage.getItem("cart"));
+            let removeButtons = $(`.item`);
+
+            console.log(removeButtons)
+            for(let j = 0; j < removeButtons.length; j++){
+
+                removeButtons.eq(j).on("click", (event) => {
+                    console.log(`cart.splice(${j}, 1);`)
+                    cart.splice(j, 1);
+                    sessionStorage.setItem("cart", JSON.stringify(cart))
+                    location.reload();
+                })
+            }
+        }
+
+    }
+
+
+        
 
     // function updateOrder() {
     //     var cartProducts = JSON.stringify(cart.items);
