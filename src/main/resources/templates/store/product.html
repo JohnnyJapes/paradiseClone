@@ -118,6 +118,7 @@ integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="ano
 
         $(`#submit`).on("click", (event) => {
             let index = matchID([[${product.id}]]);
+            
             if (index < 0) {
                 let cartItem = {
                     productId: [[${product.id}]],
@@ -129,13 +130,14 @@ integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="ano
                 cartArr[index].quantity = $('#quantity option:checked').val();
                 
             }
+            let size = cartArr.length
                 
             
             sessionStorage.setItem("cart", JSON.stringify(cartArr))
             $("#alertPlaceholder").append(`
             <div class="col">
 				<div class="alert alert-success  alert-dismissible" >
-					Added ${cartArr[index].quantity} [[${product.name}]](s) to Cart
+					Added ${cartArr[size-1].quantity} [[${product.name}]](s) to Cart
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
