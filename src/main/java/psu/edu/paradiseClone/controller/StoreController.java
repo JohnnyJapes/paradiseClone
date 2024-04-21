@@ -100,7 +100,7 @@ public class StoreController {
 				//price mismatch somehow, will need error handling in a real world scenario
 				item.setPrice(item.getProduct().getPrice());
 			}
-			total += item.getPrice();
+			total += item.getPrice() * item.getQuantity();
 		}
 		Address temp = new Address();
 		temp = order.getShipment().getAddress();
